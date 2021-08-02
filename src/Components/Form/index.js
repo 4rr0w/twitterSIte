@@ -44,7 +44,7 @@ export const Form = () => {
   const fetchData = async () => {
     setLoading(true);
     const res = await fetch(
-      `http://localhost:5000/client?username=${formData.username}&start=${formData.start_date}&end=${formData.end_date}`,
+      `https://4rr0wv2.pythonanywhere.com/client?username=${formData.username}&start=${formData.start_date}&end=${formData.end_date}`,
       {
         headers: {
           "Content-Type": "application/json",

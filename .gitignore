@@ -9,6 +9,8 @@
 # production
 /build
 
+flask_app
+
 # misc
 .DS_Store
 .env.local

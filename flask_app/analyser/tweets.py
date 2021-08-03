@@ -134,7 +134,7 @@ class Twitter:
 
         # output new excel file
         self.df_sentiments.to_excel(
-            "./Sentimental/%s-tweets-analysed.xlsx" % username)
+            "./Sentimental/%s-tweets-analysed.xlsx" % username, engine='openpyxl')
         print(good('Successfully written analysed tweets to: "./Sentimental/' +
               '%s-tweets-analysed.xls"' % username))
 

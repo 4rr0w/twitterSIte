@@ -1,16 +1,12 @@
 import os
-import nltk
 import tweepy
 from huepy import *  # refer to this https://github.com/s0md3v/huepy
 import re
 import time
 import pandas as pd
 from pandas import DataFrame
-from pandas import ExcelWriter
 from mtranslate import translate
 from textblob import TextBlob
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 
 
 class Twitter:
@@ -36,7 +32,8 @@ class Twitter:
         auth = tweepy.OAuthHandler(keys['API_key'], keys['API_secret'])
         auth.set_access_token(keys['access_token'],
                               keys['access_token_secret'])
-        api = tweepy.API(auth)
+        api = tweepy.API(auth, wait_on_rate_limit=True,
+                         wait_on_rate_limit_notify=True)
 
         # Get user's tweets object
         tweets = api.user_timeline(screen_name=username,
@@ -51,25 +48,28 @@ class Twitter:
         all_tweets = []
         all_tweets.extend(tweets)
         oldest_id = tweets[-1].id
-        while True:
-            tweet_date = tweets[-1].created_at.strftime("%Y-%m-%d")
-            oldest_tweet_date = time.strptime(tweet_date, "%Y-%m-%d")
-            if(oldest_tweet_date < date_since):
-                break
+        try:
+            while True:
+                tweet_date = tweets[-1].created_at.strftime("%Y-%m-%d")
+                oldest_tweet_date = time.strptime(tweet_date, "%Y-%m-%d")
+                if(oldest_tweet_date < date_since):
+                    break
 
-            tweets = api.user_timeline(screen_name=username,
-                                       # 200 is the maximum allowed count
-                                       count=200,
-                                       include_rts=False,
-                                       max_id=oldest_id - 1,
-                                       # Necessary to keep full_text
-                                       # otherwise only the first 140 words are extracted
-                                       tweet_mode='extended'
-                                       )
-            oldest_id = tweets[-1].id
-            # if len(tweets) == 0:
-            #     break
-            all_tweets.extend(tweets)
+                tweets = api.user_timeline(screen_name=username,
+                                           # 200 is the maximum allowed count
+                                           count=200,
+                                           include_rts=False,
+                                           max_id=oldest_id - 1,
+                                           # Necessary to keep full_text
+                                           # otherwise only the first 140 words are extracted
+                                           tweet_mode='extended'
+                                           )
+                oldest_id = tweets[-1].id
+                # if len(tweets) == 0:
+                #     break
+                all_tweets.extend(tweets)
+        except:
+            print(info("Tweet limit reached for user: %s" % username))
 
         # transform the tweepy tweets into a 2D array that will populate the csv
         outtweets = [[tweet.id_str,

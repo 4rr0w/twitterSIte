@@ -1,5 +1,5 @@
 .container {
-  padding: 30px;
+  padding: 15px;
   width: 80%;
   margin-top: 1px;
   max-width: 720px;
@@ -8,4 +8,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.sentimentsChart {
+  width: 100%;
+  max-width: 450px;
 }

@@ -44,7 +44,9 @@ export const Form = () => {
   const fetchData = async () => {
     setLoading(true);
     const res = await fetch(
-      `https://4rr0wv2.pythonanywhere.com/client?username=${formData.username}&start=${formData.start_date}&end=${formData.end_date}`,
+      `https://4rr0wv2.pythonanywhere.com/client?username=${formData.username.toLowerCase()}&start=${
+        formData.start_date
+      }&end=${formData.end_date}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -105,16 +107,16 @@ export const Form = () => {
         Submit
       </Button>
       {show && (
-        <>
+        <div className={styles.sentimentsChart}>
           <Divider> Sentiments </Divider>
 
           <ReactApexCharts
             options={options}
             series={series}
             type="donut"
-            width="500px"
+            width="100%"
           />
-        </>
+        </div>
       )}
     </div>
   );

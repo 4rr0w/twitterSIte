@@ -26,7 +26,7 @@ class Twitter:
                 return dict(tuple(line.replace('\n', '').split('=')) for line in f.readlines() if not line.startswith('#'))
 
         # this variable stores dict for all the keys/data that should not be uploaded to github publicly.
-        keys: dict = get_api("./.env")
+        keys: dict = get_api(".env")
 
         # set Oauth keys for tweepy
         auth = tweepy.OAuthHandler(keys['API_key'], keys['API_secret'])
@@ -136,7 +136,7 @@ class Twitter:
         self.df_sentiments.to_excel(
             "./Sentimental/%s-tweets-analysed.xlsx" % username)
         print(good('Successfully written analysed tweets to: "./Sentimental/' +
-              '%s-tweets-analysed.xlsx"' % username))
+              '%s-tweets-analysed.xls"' % username))
 
     def main(self, username: str, start_date):
         self.extract_tweets(username, start_date)

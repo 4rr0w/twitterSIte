@@ -43,10 +43,14 @@ export const Form = () => {
 
   const fetchData = async () => {
     setLoading(true);
+    // const url =  `https://4rr0wv2.pythonanywhere.com/client?username=${formData.username.toLowerCase()}&start=${
+    //   formData.start_date
+    // }&end=${formData.end_date}`; // for production
+    const url = `http://localhost:5000/client?username=${formData.username.toLowerCase()}&start=${
+      formData.start_date
+    }&end=${formData.end_date}`; // for dev on localhost
     const res = await fetch(
-      `https://4rr0wv2.pythonanywhere.com/client?username=${formData.username.toLowerCase()}&start=${
-        formData.start_date
-      }&end=${formData.end_date}`,
+     url,
       {
         headers: {
           "Content-Type": "application/json",

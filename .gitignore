@@ -9,6 +9,7 @@
 # production
 /build
 
+/flask_app/Sentimental
 # misc
 .DS_Store
 .env.local

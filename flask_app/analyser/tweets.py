@@ -119,13 +119,13 @@ class Twitter:
             clean_text = re.sub("[^a-zA-Z]", " ", str(clean_text))
             list.append(clean_text)
 
-        self.df_filtered["clean-text"] = pd.Series(list)
+        self.df_filtered["filtered-text"] = pd.Series(list)
         print(good('Successfully filtered tweets for %s' % username))
 
     def analyse_sentiments(self, username):
         self.df_sentiments = self.df_filtered
         sentiments = DataFrame()
-        sentiments[['polarity', 'subjectivity']] = self.df_filtered['clean-text'].apply(
+        sentiments[['polarity', 'subjectivity']] = self.df_filtered['filtered-text'].apply(
             lambda Text: pd.Series(TextBlob(str(Text)).sentiment))
         self.df_sentiments[['polarity', 'subjectivity']] = sentiments
 

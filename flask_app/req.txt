@@ -1,0 +1,7 @@
+pandas
+textblob
+mtranslate==1.8
+Flask
+tweepy
+openpyxl
+huepy

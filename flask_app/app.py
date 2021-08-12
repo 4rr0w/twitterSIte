@@ -1,4 +1,4 @@
-from flask_app.main import api_wordcloud
+from main import api_wordcloud
 from flask import Flask, request, jsonify
 from flask_cors import cross_origin
 from main import api_admin, api_client
@@ -20,7 +20,7 @@ def admin():
     try:
         api_admin(username, start)
         return "Success"
-    except ValueError:
+    except:
         return traceback.format_exc()
 
 @app.route('/client')
@@ -38,7 +38,7 @@ def client():
 
 @app.route('/wordcloud')
 @cross_origin()
-def client():
+def wordcloud():
     username = request.args.get('username')
     start = request.args.get('start')
     end = request.args.get('end')

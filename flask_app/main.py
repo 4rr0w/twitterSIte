@@ -12,7 +12,7 @@ def api_client(username: str, start_date, end_date):
 
 def api_wordcloud(username: str, start_date, end_date):
     count = Wordcloud(username, start_date, end_date)
-    return count
+    return count.get_wordcloud()
 
 
 

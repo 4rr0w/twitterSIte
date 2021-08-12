@@ -7,6 +7,9 @@ import pandas as pd
 from pandas import DataFrame
 from mtranslate import translate
 from textblob import TextBlob
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
 
 class Twitter:
@@ -14,8 +17,11 @@ class Twitter:
         self.df_extracted = DataFrame()
         self.df_translated = DataFrame()
         self.df_filtered = DataFrame()
+        self.df_stopwords = DataFrame()
         self.df_sentiments = DataFrame()
-        self.df_partioned_sentiments = DataFrame()
+        nltk.download("punkt")
+        nltk.download('stopwords')
+
 
     def extract_tweets(self, username, since):
         date_since = time.strptime(since, "%Y-%m-%d")
@@ -121,9 +127,27 @@ class Twitter:
 
         self.df_filtered["filtered-text"] = pd.Series(list)
         print(good('Successfully filtered tweets for %s' % username))
+    
+    
+    def remove_stopwords(self, username):
+        self.df_stopwords = self.df_filtered
 
+        # concat multiple tweets for fast cleaning
+        list = []
+        stop_words = stopwords.words("english")
+        stop_words.extend(["the", "in", "jii", "ji", "shri", "shree", "mati", "https", "co", "com"])
+        for index, row in self.df_stopwords.iterrows():
+            # remove @usernames and special characters(*,!,.,?)
+            text = str(row["filtered-text"])
+            text_tokens = word_tokenize(text)
+            tokens_without_sw = [word for word in text_tokens if not word in stop_words]
+            filtered_sentence = (" ").join(tokens_without_sw)
+            list.append(filtered_sentence)
+        self.df_stopwords["no-stopword-text"] = pd.Series(list)
+        print(good('Successfully removed stopwords tweets for %s' % username))
+    
     def analyse_sentiments(self, username):
-        self.df_sentiments = self.df_filtered
+        self.df_sentiments = self.df_stopwords
         sentiments = DataFrame()
         sentiments[['polarity', 'subjectivity']] = self.df_filtered['filtered-text'].apply(
             lambda Text: pd.Series(TextBlob(str(Text)).sentiment))
@@ -142,4 +166,5 @@ class Twitter:
         self.extract_tweets(username, start_date)
         self.translate_tweets(username)
         self.filter_tweets(username)
+        self.remove_stopwords(username)
         self.analyse_sentiments(username)

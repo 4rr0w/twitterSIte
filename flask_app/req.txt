@@ -5,3 +5,4 @@ Flask
 tweepy
 openpyxl
 huepy
+nltk

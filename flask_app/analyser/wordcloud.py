@@ -1,4 +1,9 @@
 import pandas as pd
+from collections import Counter
+import numpy as np
+from pandas.core.frame import DataFrame
+c = Counter()
+
 
 class Wordcloud:
     def __init__(self, username, since, end) -> None:
@@ -9,12 +14,5 @@ class Wordcloud:
         self.username = username
 
     def get_wordcloud(self)-> dict:
-        dict = {}
-      
-        # dict =  {
-        #     "on": 2,
-        #     "two": 3,
-        # }
-
-        # self.df_filtered["filtered-text"]
-        return dict
+        counts = pd.Series(np.concatenate([str(x).split() for x in self.df_filtered['no-stopword-text']])).value_counts()
+        return counts.to_dict()

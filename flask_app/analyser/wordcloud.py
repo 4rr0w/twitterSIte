@@ -15,6 +15,7 @@ class Wordcloud:
 
     def get_wordcloud(self)-> dict:
         counts = pd.Series(np.concatenate([str(x).split() for x in self.df_filtered['no-stopword-text']])).value_counts()
-        print(counts)
-        return counts.to_dict()
+        sliced = counts.iloc[:200]
+        print(sliced)
+        return sliced.to_dict()
        

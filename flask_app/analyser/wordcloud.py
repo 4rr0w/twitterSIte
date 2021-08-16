@@ -1,7 +1,7 @@
 import pandas as pd
 from collections import Counter
 import numpy as np
-from pandas.core.frame import DataFrame
+from pandas import DataFrame
 c = Counter()
 
 

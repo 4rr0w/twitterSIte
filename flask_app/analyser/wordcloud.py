@@ -14,7 +14,8 @@ class Wordcloud:
         self.username = username
 
     def get_wordcloud(self)-> dict:
-        counts = pd.Series(np.concatenate([str(x).split() for x in self.df_filtered['no-stopword-text']])).value_counts()
-        top_counts =  counts.sort().reverse()[:200]
+        counts = pd.Series(np.concatenate([str(x).split() for x in self.df_filtered['no-stopword-text']])).value_counts().to_dict()
+        dict(sorted(counts.items(), key=lambda item: item[1]))
+        top_counts =  counts
         return top_counts.to_dict()
        

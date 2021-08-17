@@ -169,6 +169,7 @@ export const Form = () => {
             type="donut"
             width="100%"
           />
+          <Divider> Wordcloud </Divider>
           <ReactWordcloud
             words={words}
             style={{ background: "white" }}

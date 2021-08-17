@@ -8,23 +8,24 @@ import "./App.css";
 
 export const App = () => {
   return (
-    <div className="mainApp">
-      <Router>
-        <Header />
-        <Switch>
-          <Route
-            path={["/home", "/"]}
-            exact
-            children={<ParticleBg children={<Home />} />}
-          />
-          <Route path="/tool" children={<ParticleBg children={<Form />} />} />
-        </Switch>
-        {/* <About />
+    // <div className="mainApp">
+    <Router>
+      <Route path="/" component={Header} />
+      <ParticleBg />
+      <Switch>
+        <Route
+          path={["/home", "/"]}
+          exact
+          children={<ParticleBg component={<Home />} />}
+        />
+        <Route path="/tool" children={<ParticleBg component={<Form />} />} />
+      </Switch>
+      {/* <About />
           <Reports  />
           <Contact  />
           <Footer  /> */}
-      </Router>
-    </div>
+    </Router>
+    // </div>
   );
 };
 

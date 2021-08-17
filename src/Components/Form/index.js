@@ -9,6 +9,7 @@ import styles from "./style.module.css";
 import { Fade } from "react-reveal";
 import { Button, Typography, Divider } from "antd";
 import ReactApexCharts from "react-apexcharts";
+import ReactWordcloud from "react-wordcloud";
 
 export const Form = () => {
   const [formData, setFormData] = useState();
@@ -25,6 +26,7 @@ export const Form = () => {
   });
 
   const [series, setSeries] = useState([]);
+  const [words, setWords] = useState([]);
 
   useEffect(() => {
     setSeries([
@@ -41,7 +43,7 @@ export const Form = () => {
     setOptions({ ...options, labels: labels });
   }, [sentiments]);
 
-  const fetchData = async () => {
+  const fetchSentiments = async () => {
     setLoading(true);
     // const url =  `https://4rr0wv2.pythonanywhere.com/client?username=${formData.username.toLowerCase()}&start=${
     //   formData.start_date
@@ -49,22 +51,46 @@ export const Form = () => {
     const url = `http://localhost:5000/client?username=${formData.username.toLowerCase()}&start=${
       formData.start_date
     }&end=${formData.end_date}`; // for dev on localhost
-    const res = await fetch(
-     url,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }
-    );
+    const res = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
     setLoading(false);
     return res.json();
   };
 
-  const call_api = () => {
-    fetchData().then((data) => {
+  const fetchWordcloudData = async () => {
+    setLoading(true);
+    // const url =  `https://4rr0wv2.pythonanywhere.com/client?username=${formData.username.toLowerCase()}&start=${
+    //   formData.start_date
+    // }&end=${formData.end_date}`; // for production
+    const url = `http://localhost:5000/wordcloud?username=${formData.username.toLowerCase()}&start=${
+      formData.start_date
+    }&end=${formData.end_date}`; // for dev on localhost
+    const res = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    setLoading(false);
+    return res.json();
+  };
+
+  const call_apis = () => {
+    fetchSentiments().then((data) => {
       setSentiments(data);
+      setShow(true);
+    });
+    fetchWordcloudData().then((data) => {
+      const keys = Object.keys(data);
+
+      const list = [];
+      keys.map((key) => list.push({ text: key, value: data[key] }));
+
+      setWords(list);
       setShow(true);
     });
   };
@@ -74,7 +100,7 @@ export const Form = () => {
       setValid(false);
     } else {
       setValid(true);
-      call_api();
+      call_apis();
     }
   };
 
@@ -119,6 +145,10 @@ export const Form = () => {
             series={series}
             type="donut"
             width="100%"
+          />
+          <ReactWordcloud
+            words={words}
+            style={{ background: "white", height: "200px", width: "300px" }}
           />
         </div>
       )}

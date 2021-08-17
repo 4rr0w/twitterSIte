@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import ParticlesBg from "particles-bg";
-import Fade from "react-reveal";
-import styles from "./style.module.css";
-import { Form } from "../Form";
+import Particles from "react-particles-js";
 
-export const ParticleBg = ({ children }) => {
+export const ParticleBg = ({ component }) => {
   return (
-    <div className={styles.container}>
-      <ParticlesBg type="circle" bg={true} />
-      <div className={styles.child}>{children}</div>
+    <div
+      style={{
+        paddingTop: "100px",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {component}
     </div>
   );
 };

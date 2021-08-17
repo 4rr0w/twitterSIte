@@ -1,7 +1,11 @@
-.rowBanner{
-    background-color: rgba(255, 255, 255, 0.35);
-    padding: 30px;
-    border-radius: 4px;
-    width: 80%;
-    max-width: 640px;
+.rowBanner {
+  background-color: #7a6b6b86;
+  padding: 30px;
+  border-radius: 4px;
+  width: 80%;
+  max-width: 640px;
+}
+
+.rowBanner * {
+  color: white;
 }

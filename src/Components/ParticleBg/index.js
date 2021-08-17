@@ -5,7 +5,7 @@ export const ParticleBg = ({ component }) => {
   return (
     <div
       style={{
-        paddingTop: "100px",
+        paddingTop: "60px",
         width: "100%",
         height: "100%",
         display: "flex",

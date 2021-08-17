@@ -13,12 +13,24 @@ import ReactWordcloud from "react-wordcloud";
 
 export const Form = () => {
   const [formData, setFormData] = useState();
+  const [total, setTotal] = useState(0);
   const [error, setError] = useState([]);
   const [valid, setValid] = useState(true);
   const [sentiments, setSentiments] = useState({});
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState({
+    plotOptions: {
+      pie: {
+        donut: {
+          labels: {
+            show: true,
+            name: {},
+            value: {},
+          },
+        },
+      },
+    },
     labels: [],
     chart: {
       type: "donut",
@@ -28,13 +40,24 @@ export const Form = () => {
   const [series, setSeries] = useState([]);
   const [words, setWords] = useState([]);
 
+  const wordoptions = {
+    rotations: 2,
+    rotationAngles: [-90, 0],
+    fontSizes: [10, 60],
+  };
+
   useEffect(() => {
     setSeries([
       ...Object.keys(sentiments).map((key) => {
         return sentiments[key];
       }),
     ]);
+    let t = 0;
+    Object.keys(sentiments).map((key) => {
+      t += sentiments[key];
+    });
 
+    setTotal(t);
     const labels = [
       ...Object.keys(sentiments).map((key) => {
         return key.replace("_", " ");
@@ -139,7 +162,7 @@ export const Form = () => {
       {show && (
         <div className={styles.sentimentsChart}>
           <Divider> Sentiments </Divider>
-
+          <p>Total: {total}</p>
           <ReactApexCharts
             options={options}
             series={series}
@@ -148,7 +171,8 @@ export const Form = () => {
           />
           <ReactWordcloud
             words={words}
-            style={{ background: "white", height: "200px", width: "300px" }}
+            style={{ background: "white" }}
+            options={wordoptions}
           />
         </div>
       )}

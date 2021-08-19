@@ -1,3 +1,9 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 .container {
   padding: 15px;
   width: 80%;

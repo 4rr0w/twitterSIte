@@ -6,8 +6,7 @@
   flex-direction: row;
   width: calc(100vw);
   justify-content: center;
-  margin: 0px !important;
-  z-index: 100;
+  z-index: 10;
 }
 
 .navbar > * {

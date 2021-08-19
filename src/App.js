@@ -1,32 +1,34 @@
 import React from "react";
 import { Header } from "./Components/Header/index";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import { ParticleBg } from "./Components/ParticleBg";
 import { Form } from "./Components/Form";
 import { Home } from "./Components/Home";
 import "./App.css";
+import ParticlesBg from "particles-bg";
+
+const wrapRouter = (Component) => {
+  const WrappedComponent = () => (
+    <Router basename="/">
+      <Component />
+    </Router>
+  );
+  return WrappedComponent;
+};
 
 export const App = () => {
   return (
-    // <div className="mainApp">
-    <Router>
-      <Route path="/" component={Header} />
-      <ParticleBg />
-      <Switch>
-        <Route
-          path={["/home", "/"]}
-          exact
-          children={<ParticleBg component={<Home />} />}
-        />
-        <Route path="/tool" children={<ParticleBg component={<Form />} />} />
-      </Switch>
-      {/* <About />
-          <Reports  />
-          <Contact  />
-          <Footer  /> */}
-    </Router>
-    // </div>
+    <div className="mainApp">
+      <Header />
+      <ParticlesBg type="circle" bg={true} />
+      <div className="switch">
+        <Switch>
+          <Route path={["/home", "/"]} exact component={Home} />
+          <Route path="/tool" exact component={Form} />
+        </Switch>
+      </div>
+    </div>
   );
 };
 
-export default App;
+export default wrapRouter(App);

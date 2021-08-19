@@ -128,55 +128,57 @@ export const Form = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <Fade>
-        <JsonForms
-          schema={schema}
-          uischema={uischema}
-          data={formData}
-          renderers={materialRenderers}
-          cells={materialCells}
-          onChange={({ data, errors }) => {
-            setFormData(data);
-            setError(errors);
+    <div className={styles.main}>
+      <div className={styles.container}>
+        <Fade>
+          <JsonForms
+            schema={schema}
+            uischema={uischema}
+            data={formData}
+            renderers={materialRenderers}
+            cells={materialCells}
+            onChange={({ data, errors }) => {
+              setFormData(data);
+              setError(errors);
+            }}
+          />
+        </Fade>
+        {!valid ? (
+          <Typography.Text type="danger">
+            Please fill all required fileds properly
+          </Typography.Text>
+        ) : (
+          ""
+        )}
+        <br />
+        <Button
+          type="primary"
+          onClick={() => {
+            validate();
           }}
-        />
-      </Fade>
-      {!valid ? (
-        <Typography.Text type="danger">
-          Please fill all required fileds properly
-        </Typography.Text>
-      ) : (
-        ""
-      )}
-      <br />
-      <Button
-        type="primary"
-        onClick={() => {
-          validate();
-        }}
-        loading={loading}
-      >
-        Submit
-      </Button>
-      {show && (
-        <div className={styles.sentimentsChart}>
-          <Divider> Sentiments </Divider>
-          <p>Total: {total}</p>
-          <ReactApexCharts
-            options={options}
-            series={series}
-            type="donut"
-            width="100%"
-          />
-          <Divider> Wordcloud </Divider>
-          <ReactWordcloud
-            words={words}
-            style={{ background: "white" }}
-            options={wordoptions}
-          />
-        </div>
-      )}
+          loading={loading}
+        >
+          Submit
+        </Button>
+        {show && (
+          <div className={styles.sentimentsChart}>
+            <Divider> Sentiments </Divider>
+            <p>Total: {total}</p>
+            <ReactApexCharts
+              options={options}
+              series={series}
+              type="donut"
+              width="100%"
+            />
+            <Divider> Wordcloud </Divider>
+            <ReactWordcloud
+              words={words}
+              style={{ background: "white" }}
+              options={wordoptions}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

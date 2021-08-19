@@ -1,8 +1,14 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 .rowBanner {
   background-color: #7a6b6b86;
   padding: 30px;
   border-radius: 4px;
-  width: 80%;
+  width: 100%;
   max-width: 640px;
 }
 

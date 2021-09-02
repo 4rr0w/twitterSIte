@@ -20,7 +20,7 @@ export const App = () => {
   return (
     <div className="mainApp">
       <Header />
-      <ParticlesBg type="circle" bg={true} />
+      {/* <ParticlesBg type="circle" bg={true} /> */}
       <div className="switch">
         <Switch>
           <Route path={["/home", "/"]} exact component={Home} />

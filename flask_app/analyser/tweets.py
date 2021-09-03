@@ -5,6 +5,7 @@ import re
 import time
 import pandas as pd
 from pandas import DataFrame
+from openpyxl import load_workbook
 from mtranslate import translate
 from textblob import TextBlob
 import nltk
@@ -40,22 +41,29 @@ class Twitter:
                               keys['access_token_secret'])
         api = tweepy.API(auth, wait_on_rate_limit=True,
                          wait_on_rate_limit_notify=True)
-
-        # Get user's tweets object
-        tweets = api.user_timeline(screen_name=username,
-                                   # 200 is the maximum allowed count
-                                   count=200,
-                                   include_rts=False,
-                                   # Necessary to keep full_text
-                                   # otherwise only the first 140 words are extracted
-                                   tweet_mode='extended'
-                                   )
-
+        
         all_tweets = []
-        all_tweets.extend(tweets)
-        oldest_id = tweets[-1].id
+
+        oldest_id = ""
+        if os.path.exists("./Sentimental/%s-tweets-analysed.xlsx" % username):
+            print(info('Old sheet found. Appending new tweeets!'))
+            old_tweets_df = pd.read_excel("./Sentimental/%s-tweets-analysed.xlsx" % username, engine='openpyxl')
+            oldest_id = old_tweets_df.iloc[-1,1]
+        else:
+            # Get user's tweets object
+            tweets = api.user_timeline(screen_name=username,
+                                    # 200 is the maximum allowed count
+                                    count=200,
+                                    include_rts=False,
+                                    # Necessary to keep full_text
+                                    # otherwise only the first 140 words are extracted
+                                    tweet_mode='extended'
+                                    )
+            all_tweets.extend(tweets)
+            oldest_id = tweets[-1].id
         try:
             while True:
+                print(oldest_id)
                 tweet_date = tweets[-1].created_at.strftime("%Y-%m-%d")
                 oldest_tweet_date = time.strptime(tweet_date, "%Y-%m-%d")
                 if(oldest_tweet_date < date_since):
@@ -92,6 +100,7 @@ class Twitter:
     def translate_tweets(self, username):
         self.df_translated = self.df_extracted
         # concat multiple tweets for fast translations
+        print(self.df_translated)
         merged_tweets_df = pd.DataFrame(self.df_extracted.groupby(
             self.df_translated.index // 7)["text"].agg(" ENDOFTWEETS ".join))
         list = []
@@ -156,9 +165,14 @@ class Twitter:
         if not os.path.exists("Sentimental"):
             os.makedirs("Sentimental")
 
-        # output new excel file
-        self.df_sentiments.to_excel(
-            "./Sentimental/%s-tweets-analysed.xlsx" % username, engine='openpyxl')
+        if os.path.exists("./Sentimental/%s-tweets-analysed.xlsx" % username):
+            writer = pd.ExcelWriter("./Sentimental/%s-tweets-analysed.xlsx" % username, engine='openpyxl')
+            self.df_sentiments.to_excel(writer, startrow=len(self.df_sentiments) + 1, header=False)
+            writer.save()
+        else:
+            # output new excel file
+            self.df_sentiments.to_excel(
+                "./Sentimental/%s-tweets-analysed.xlsx" % username, engine='openpyxl')
         print(good('Successfully written analysed tweets to: "./Sentimental/' +
               '%s-tweets-analysed.xls"' % username))
 

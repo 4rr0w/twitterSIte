@@ -82,6 +82,7 @@ class Twitter:
                 # if len(tweets) == 0:
                 #     break
                 all_tweets.extend(tweets)
+            print(good('Successfully extracted raw tweets for %s' % username))
         except:
             print(info("Tweet limit reached for user: %s" % username))
 
@@ -95,7 +96,7 @@ class Twitter:
 
         self.df_extracted = DataFrame(outtweets, columns=[
                                       "id", "created_at", "favorite_count", "retweet_count", "text"])
-        print(good('Successfully extracted raw tweets for %s' % username))
+        
 
     def translate_tweets(self, username):
         self.df_translated = self.df_extracted
